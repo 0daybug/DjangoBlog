@@ -119,5 +119,5 @@ STATICFILES_DIRS = (
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sina.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER='0daybug@sina.com'
-EMAIL_HOST_PASSWORD='dna19921027#@boy'
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
