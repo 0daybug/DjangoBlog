@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load custom_markdown %}
+
+{% block content %}
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead"><a href="{% url 'home' %}">Home Page</a> </h1>
+
+                <!-- A single blog post -->
+                {% for article in article_list %}
+                <section class="post">
+                    <header class="post-header">
+
+                        <h2 class="post-title"><a href="{% url 'detail' id=article.id %}">{{ article.title }}</a></h2>
+
+                        <p class="post-meta">
+                            Time:<a class="post-author" href="#">{{ article.publish_date|date:'Y/m/d' }}
+                            By <a href="#" class="post-author">Kevin Dylan</a> under
+                            {% for tag in article.tags.all %}
+
+                            <a class="post-category post-category-design" href="#"> {{ tag.name }}</a>
+                            {% endfor %}
+                            <!-- a class="post-category post-category-pure" href="#">Pure</a-->
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>
+                             {{ article.content|truncatewords:2 | custom_markdown }}
+                        </p>
+                    </div>
+                    <a class="pure-button" href="{% url 'detail' id=article.id %}">Read More >>> </a>
+                </section>
+
+                <h1 class="content-subhead"></h1>
+                {% endfor %}
+            </div>
+
+            <div class="footer">
+                <div class="pure-menu pure-menu-horizontal pure-menu-open">
+                    <ul>
+
+                        <li><a href="http://purecss.io/">About</a></li>
+                        <li><a href="http://twitter.com/yuilibrary/">Twitter</a></li>
+                        <li><a href="http://github.com/yahoo/pure/">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

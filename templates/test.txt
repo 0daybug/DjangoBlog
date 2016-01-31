@@ -1,0 +1,124 @@
+<!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="{{ article.id }}" data-title="{{ article.title }}" data-url="#"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"Kevin"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+    def get_absolute_url(self):
+        path = reverse('detail', kwargs={'id':self.id})
+        return "http://127.0.0.1:8000%s" % path
+
+
+ {{ article.content|truncatewords:2 | custom_markdown }}
+
+  <!--a class="pure-button" href="{% url 'comment' id=article.id %}">Comment It >>> </a-->
+
+
+  <h2 class="brand-tagline">Category</h2>
+  <nav class="nav">
+      <ul class="nav-list">
+          <li class="nav-item">
+              {% for category in category_list %}
+                  <a class="pure-button" href="{% url 'category'%}?name={{ category.name }}">{{ category.name }}</a>
+              {% endfor %}
+          </li>
+      </ul>
+  </nav>
+
+
+
+        <h2 class="brand-tagline">Category</h2>
+            <nav class="nav">
+                <ul class="nav-list">
+                 <li class="nav-item">
+                    {% for category in category_list %}
+                        <a class="pure-button" href="{% url "category"   %}">{{ category.name }}</a>
+                    {% endfor %}
+                 </li>
+                </ul>
+            </nav>
+            <p></p>
+
+
+
+
+
+            from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from books.models import Book
+from django.template import RequestContext
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
+
+
+def hello(request):
+	return HttpResponse("hello world!")
+
+def search(request):
+	errors = []
+	if 'q' in request.GET :
+		q = request.GET['q']
+		if not q:
+			errors.append('Enter a search term.')
+		elif len(q) >20:
+			errors.append('Please enter at most 20 characters.')
+		else:
+			books = Book.objects.filter(title__icontains=q)
+			return render_to_response('search_result.html',
+				{'books':books,'query':q})
+
+	return render_to_response('search_form.html',{'errors':errors})
+
+def contact(request):
+#	title='This is mail title.'
+#	testmessage='Hello, This is a message'
+#	testsender='123456789@qq.com'
+#	testmail_list=['recv@163.com',]
+#	send_mail(
+#                subject=title,
+#                message=testmessage,
+#                from_email=testsender,
+#                recipient_list=testmail_list,
+#                fail_silently=False,
+#                connection=None
+#            )
+	errors=[]
+	if request.method == 'POST':
+		if not request.POST.get('subject',''):
+			errors.append('Enter a subject.')
+		if not request.POST.get('message',''):
+			errors.append('Enter a message.')
+		if request.POST.get('email') and '@' not in request.POST['email']:
+			errors.append('Enter a valid e-mail address.')
+		if not errors:
+			send_mail(
+				request.POST['subject'],
+				request.POST['message'],
+				request.POST.get('email','123456@qq.com'),
+				['recv@163.com'],
+			)
+			return HttpResponseRedirect('/contact/thanks/')
+
+	return render_to_response('contact_form.html',
+		{'errors':errors,
+		'subject': request.POST.get('subject',''),
+		'message': request.POST.get('message',''),
+		'email': request.POST.get('email',''),
+		}, context_instance=RequestContext(request))
+
+def thanks(request):
+	return HttpResponse("Great Thanks!")

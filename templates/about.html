@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block about %}
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+                <h1 class="content-subhead"><a href="{% url 'home' %}">Home Page</a> </h1>
+
+                <!-- A single blog post -->
+                <section class="post">
+                    <header class="post-header">
+
+                        <h2 class="post-title">About Me</h2>
+
+                        <p>
+                            <img  class="post-avatar1" alt="Tilo Mitra&#x27;s avatar" height="200" width="200" src="{% static "img/about/about.png" %}"  />
+                            <div>
+                            <h3>大家好,我是WindLike,我是一名Python爱好者,这是我的第一个Django Web程序,希望你们能喜欢!</h3>
+                            <h3> 我的联系邮箱是:likewindjustgone@gmail.com</h3>
+                            </div>
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>
+
+                        </p>
+                    </div>
+
+                </section>
+
+                <h1 class="content-subhead"></h1>
+            </div>
+
+            <div class="footer">
+                <div class="pure-menu pure-menu-horizontal pure-menu-open">
+                    <ul>
+
+                        <li><a href="http://purecss.io/">About</a></li>
+                        <li><a href="http://twitter.com/yuilibrary/">Twitter</a></li>
+                        <li><a href="http://github.com/yahoo/pure/">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
